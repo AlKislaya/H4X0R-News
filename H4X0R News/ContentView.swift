@@ -7,15 +7,31 @@
 
 import SwiftUI
 
+struct K {
+    struct Core {
+        static let appName = "H4X0R News"
+    }
+}
+
 struct ContentView: View {
+    @ObservedObject var networkManager = NetworkManager()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            List{
+                ForEach(networkManager.posts) { post in
+                    HStack {
+                        Text(String(post.points))
+                        Text(post.title)
+                    }
+                }
+            }
+            .navigationTitle(K.Core.appName)
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .padding()
+        .onAppear() {
+            networkManager.fetchData()
+        }
     }
 }
 
