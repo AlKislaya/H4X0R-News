@@ -29,7 +29,9 @@ struct ContentView: View {
                 }
             }
             .navigationTitle(K.Core.appName)
+#if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+#endif
         }
         .onAppear() {
             networkManager.fetchData()

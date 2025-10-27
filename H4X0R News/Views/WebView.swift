@@ -8,14 +8,38 @@
 import SwiftUI
 import WebKit
 
-struct WebView: UIViewRepresentable {
+#if os(macOS)
+public typealias ViewRepresentable = NSViewRepresentable
+#else
+public typealias ViewRepresentable = UIViewRepresentable
+#endif
+
+struct WebView: ViewRepresentable {
     let urlString: String?
     
+    //how to define only func name??
+#if os(macOS)
+    func makeNSView(context: Context) -> WKWebView {
+        return WKWebView()
+    }
+#else
     func makeUIView(context: Context) -> WKWebView {
         return WKWebView()
     }
+#endif
     
+    
+#if os(macOS)
+    func updateNSView(_ uiView: WKWebView, context: Context) {
+        updateView(uiView, context: context)
+    }
+#else
     func updateUIView(_ uiView: WKWebView, context: Context) {
+        updateView(uiView, context: context)
+    }
+#endif
+    
+    func updateView(_ uiView: WKWebView, context: Context) {
         if urlString == nil {
             print("err_urlString_nil")
             return
